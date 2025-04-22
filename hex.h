@@ -723,6 +723,8 @@ struct MemoryEditor
         uint8_t buf[8];
         size_t elem_size = DataTypeGetSize(data_type);
         size_t size = addr + elem_size > mem_size ? mem_size - addr : elem_size;
+        // Ensure we don't exceed the buffer size
+        size = (size > sizeof(buf)) ? sizeof(buf) : size;
         if (ReadFn)
             for (int i = 0, n = (int)size; i < n; ++i)
                 buf[i] = ReadFn(mem_data, addr + i);
